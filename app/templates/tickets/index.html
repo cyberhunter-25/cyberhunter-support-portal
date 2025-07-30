@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}My Tickets - {{ super() }}{% endblock %}
+
+{% block content %}
+<h1>My Support Tickets</h1>
+<p>Welcome, {{ current_user.name }}!</p>
+<a href="{{ url_for('tickets.create') }}" class="btn btn-primary">Create New Ticket</a>
+{% endblock %}

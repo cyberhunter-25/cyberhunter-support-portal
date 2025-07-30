@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block title %}Login - {{ super() }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .login-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #1a1a1a;
+        border: 1px solid #00ff88;
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    }
+    
+    .logo-section {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    
+    .portal-title {
+        color: #00ff88;
+        font-size: 2em;
+        margin-bottom: 10px;
+    }
+    
+    .portal-subtitle {
+        color: #cccccc;
+        font-size: 1.2em;
+    }
+    
+    .disclaimer-box {
+        background-color: #2a2a2a;
+        border: 1px solid #ff6b35;
+        border-radius: 4px;
+        padding: 15px;
+        margin-bottom: 30px;
+        color: #ff6b35;
+    }
+    
+    .oauth-buttons {
+        margin-bottom: 30px;
+    }
+    
+    .oauth-btn {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        background-color: #2a2a2a;
+        border: 1px solid #00ff88;
+        color: #ffffff;
+        text-decoration: none;
+        text-align: center;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .oauth-btn:hover {
+        background-color: #00ff88;
+        color: #0a0a0a;
+        box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+    }
+    
+    .divider {
+        text-align: center;
+        margin: 30px 0;
+        color: #666;
+        position: relative;
+    }
+    
+    .divider::before,
+    .divider::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 45%;
+        height: 1px;
+        background-color: #333;
+    }
+    
+    .divider::before { left: 0; }
+    .divider::after { right: 0; }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #00ff88;
+    }
+    
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        background-color: #2a2a2a;
+        border: 1px solid #333;
+        color: #ffffff;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .form-group input:focus {
+        outline: none;
+        border-color: #00ff88;
+        box-shadow: 0 0 5px rgba(0, 255, 136, 0.3);
+    }
+    
+    .form-check {
+        margin-bottom: 20px;
+    }
+    
+    .form-check input {
+        margin-right: 10px;
+    }
+    
+    .btn-submit {
+        width: 100%;
+        padding: 12px;
+        background-color: #00ff88;
+        border: none;
+        color: #0a0a0a;
+        font-weight: bold;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: 'Courier New', monospace;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-submit:hover {
+        background-color: #00cc6a;
+        box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+    }
+    
+    .links {
+        margin-top: 20px;
+        text-align: center;
+    }
+    
+    .links a {
+        color: #00ff88;
+        text-decoration: none;
+        margin: 0 10px;
+    }
+    
+    .links a:hover {
+        text-decoration: underline;
+    }
+    
+    .emergency-contact {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 30px;
+        border-top: 1px solid #333;
+        color: #ff6b35;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="logo-section">
+        <h1 class="portal-title">CyberHunter CLIRSec</h1>
+        <h2 class="portal-subtitle">Customer Ticket Portal</h2>
+    </div>
+    
+    <div class="disclaimer-box">
+        <p>⚠️ RESTRICTED ACCESS</p>
+        <p>This portal is restricted to registered CyberHunter CLIRSec clients only. 
+           Unauthorized access is prohibited. All activities are logged and monitored.</p>
+    </div>
+    
+    <div class="oauth-buttons">
+        <a href="{{ url_for('auth.oauth_login', provider='microsoft') }}" class="oauth-btn">
+            <i class="fab fa-microsoft"></i> Sign in with Microsoft
+        </a>
+        <a href="{{ url_for('auth.oauth_login', provider='google') }}" class="oauth-btn">
+            <i class="fab fa-google"></i> Sign in with Google
+        </a>
+    </div>
+    
+    {% if config.LOCAL_AUTH_ENABLED %}
+    <div class="divider">OR</div>
+    
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            {{ form.username.label }}
+            {{ form.username(class="form-control", placeholder="Username or Email") }}
+            {% if form.username.errors %}
+                <div class="text-danger">{{ form.username.errors[0] }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.password.label }}
+            {{ form.password(class="form-control", placeholder="Password") }}
+            {% if form.password.errors %}
+                <div class="text-danger">{{ form.password.errors[0] }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-check">
+            {{ form.remember_me() }}
+            {{ form.remember_me.label }}
+        </div>
+        
+        {{ form.submit(class="btn-submit") }}
+    </form>
+    
+    <div class="links">
+        <a href="{{ url_for('auth.register') }}">Register</a>
+        <a href="{{ url_for('auth.password_reset_request') }}">Forgot Password?</a>
+    </div>
+    {% endif %}
+    
+    <div class="emergency-contact">
+        <p>🚨 Critical Emergency? Call: {{ config.SUPPORT_PHONE }}</p>
+    </div>
+</div>
+{% endblock %}

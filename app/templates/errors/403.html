@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}Access Forbidden - {{ super() }}{% endblock %}
+
+{% block content %}
+<h1>403 - Access Forbidden</h1>
+<p>You do not have permission to access this resource.</p>
+<a href="{{ url_for('index') }}">Return to Home</a>
+{% endblock %}
