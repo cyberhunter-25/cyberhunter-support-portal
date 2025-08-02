@@ -1,22 +1,13 @@
 # Production requirements
-# Includes base requirements plus production-specific packages
-
 -r base.txt
 
-# Production Web Server
+# Web server
 gunicorn==21.2.0
 gevent==23.9.1
 
-# Monitoring
-sentry-sdk[flask]==1.34.0
-prometheus-flask-exporter==0.22.4
+# Production monitoring
+sentry-sdk[flask]==1.32.0
 
-# Performance
-python-memcached==1.59
-hiredis==2.2.3
-
-# Security
-PyNaCl==1.5.0
-
-# Production Database
-psycopg2==2.9.7  # Compiled version for production
+# Production optimizations
+brotli==1.1.0
+simplejson==3.19.1
