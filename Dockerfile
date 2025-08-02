@@ -12,10 +12,10 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy requirements
-COPY requirements/prod.txt requirements.txt
+COPY requirements/ /app/requirements/
 
 # Install Python dependencies
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements/prod.txt
 
 # Stage 2: Production stage
 FROM python:3.11-slim
@@ -44,7 +44,7 @@ WORKDIR /app
 
 # Copy wheels from builder
 COPY --from=builder /app/wheels /wheels
-COPY --from=builder /app/requirements.txt .
+COPY --from=builder /app/requirements /app/requirements
 
 # Install dependencies
 RUN pip install --no-cache /wheels/*
