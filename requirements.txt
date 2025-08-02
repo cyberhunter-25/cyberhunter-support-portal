@@ -1,0 +1,8 @@
+# Main requirements file
+-r requirements/base.txt
+
+# Web server
+gunicorn==21.2.0
+
+# Development tools (optional in production)
+python-decouple==3.8
