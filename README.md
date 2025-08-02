@@ -17,8 +17,8 @@ A professional emergency support ticketing system for CyberHunter CLIRSec client
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/cyberhunter/support-portal.git
-   cd support-portal
+   git clone https://github.com/cyberhunter-25/cyberhunter-support-portal.git
+   cd cyberhunter-support-portal
    ```
 
 2. **Set up environment**

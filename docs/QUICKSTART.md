@@ -15,8 +15,8 @@ ssh root@your-server-ip
 ### Step 2: Download and Run
 ```bash
 # Download the repository
-git clone https://github.com/cyberhunter/support-portal.git
-cd support-portal
+git clone https://github.com/cyberhunter-25/cyberhunter-support-portal.git
+cd cyberhunter-support-portal
 
 # Make deployment script executable
 chmod +x scripts/deploy.sh

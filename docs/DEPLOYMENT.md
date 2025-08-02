@@ -13,8 +13,8 @@ This guide walks through deploying the CyberHunter Security Portal to a cloud se
 
 1. **Clone the repository on your server**
    ```bash
-   git clone https://github.com/cyberhunter/support-portal.git
-   cd support-portal
+   git clone https://github.com/cyberhunter-25/cyberhunter-support-portal.git
+   cd cyberhunter-support-portal
    ```
 
 2. **Configure environment variables**
