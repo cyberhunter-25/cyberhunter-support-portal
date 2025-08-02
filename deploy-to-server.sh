@@ -52,6 +52,8 @@ if [ -d ".git" ]; then
     git pull origin main
 else
     echo "📥 Cloning repository..."
+    # Try SSH clone first, fall back to HTTPS if needed
+    git clone git@github.com:cyberhunter-25/cyberhunter-support-portal.git . || \
     git clone https://github.com/cyberhunter-25/cyberhunter-support-portal.git .
 fi
 
