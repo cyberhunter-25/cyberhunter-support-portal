@@ -35,9 +35,11 @@ RUN useradd -m -u 1000 cyberhunter && \
     mkdir -p /var/www/cyberhunter-portal/uploads && \
     mkdir -p /var/log/cyberhunter-portal && \
     mkdir -p /var/run/clamav && \
+    mkdir -p /app/logs && \
     chown -R cyberhunter:cyberhunter /var/www/cyberhunter-portal && \
     chown -R cyberhunter:cyberhunter /var/log/cyberhunter-portal && \
-    chown -R clamav:clamav /var/run/clamav
+    chown -R clamav:clamav /var/run/clamav && \
+    chown -R cyberhunter:cyberhunter /app/logs
 
 # Set working directory
 WORKDIR /app
@@ -64,6 +66,9 @@ ENV FLASK_APP=run.py
 ENV FLASK_ENV=production
 ENV PYTHONUNBUFFERED=1
 ENV UPLOAD_FOLDER=/var/www/cyberhunter-portal/uploads
+
+# Fix permissions for app logs
+RUN mkdir -p /app/logs && chown -R cyberhunter:cyberhunter /app/logs
 
 # Create startup script
 RUN echo '#!/bin/bash\n\
