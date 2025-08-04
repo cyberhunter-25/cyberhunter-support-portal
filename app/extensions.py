@@ -1,6 +1,7 @@
 """
 Flask extensions initialization
 """
+import redis
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -27,8 +28,7 @@ mail = Mail()
 # Rate limiting
 limiter = Limiter(
     key_func=get_remote_address,
-    default_limits=["100 per hour"],
-    storage_uri="redis://localhost:6379/3"
+    default_limits=["100 per hour"]
 )
 
 # Caching
@@ -87,6 +87,11 @@ def init_extensions(app):
     
     # Rate limiting
     if app.config.get('RATELIMIT_ENABLED'):
+        limiter._storage_uri = app.config.get('RATELIMIT_STORAGE_URL', 'redis://localhost:6379/3')
+        limiter.init_app(app)
+    else:
+        # Initialize limiter without storage to avoid Redis connection
+        limiter.enabled = False
         limiter.init_app(app)
     
     # Caching
@@ -95,7 +100,44 @@ def init_extensions(app):
         'CACHE_REDIS_URL': app.config.get('REDIS_URL', 'redis://localhost:6379/0')
     })
     
-    # Session
+    # Session - Configure Redis connection from REDIS_URL
+    redis_url = app.config.get('REDIS_URL', 'redis://localhost:6379/0')
+    # Parse the Redis URL to create a Redis instance
+    if redis_url.startswith('redis://'):
+        # Extract password if present
+        if '@' in redis_url:
+            # Format: redis://:password@host:port/db
+            parts = redis_url.replace('redis://', '').split('@')
+            auth_part = parts[0]
+            host_part = parts[1]
+            
+            password = None
+            if auth_part.startswith(':'):
+                password = auth_part[1:]
+            
+            host, port_db = host_part.split(':')
+            port, db_num = port_db.split('/')
+            
+            app.config['SESSION_REDIS'] = redis.Redis(
+                host=host,
+                port=int(port),
+                db=int(db_num),
+                password=password,
+                decode_responses=False
+            )
+        else:
+            # Format: redis://host:port/db
+            host_part = redis_url.replace('redis://', '')
+            host, port_db = host_part.split(':')
+            port, db_num = port_db.split('/')
+            
+            app.config['SESSION_REDIS'] = redis.Redis(
+                host=host,
+                port=int(port),
+                db=int(db_num),
+                decode_responses=False
+            )
+    
     sess.init_app(app)
     
     # CSRF
