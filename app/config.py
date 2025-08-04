@@ -93,8 +93,8 @@ class Config:
     APP_URL = os.environ.get('APP_URL', 'http://localhost:5000')
     
     # Rate Limiting
-    RATELIMIT_ENABLED = os.environ.get('RATELIMIT_ENABLED', 'True').lower() == 'true'
-    RATELIMIT_STORAGE_URL = os.environ.get('RATELIMIT_STORAGE_URL', 'redis://localhost:6379/3')
+    RATELIMIT_ENABLED = os.environ.get('RATELIMIT_ENABLED', 'False').lower() == 'true'
+    RATELIMIT_STORAGE_URL = os.environ.get('RATELIMIT_STORAGE_URL', 'redis://redis:6379/3')
     RATELIMIT_DEFAULT = os.environ.get('RATELIMIT_DEFAULT', '100/hour')
     RATELIMIT_LOGIN = os.environ.get('RATELIMIT_LOGIN', '5/minute')
     
