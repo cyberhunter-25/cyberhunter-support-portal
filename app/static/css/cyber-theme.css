@@ -103,28 +103,28 @@ h1, h2, h3 {
 
 /* Placeholder styling for better contrast */
 .form-control::placeholder {
-    color: #888888;
-    opacity: 1;
+    color: #cccccc !important;
+    opacity: 1 !important;
 }
 
 .form-control::-webkit-input-placeholder {
-    color: #888888;
-    opacity: 1;
+    color: #cccccc !important;
+    opacity: 1 !important;
 }
 
 .form-control::-moz-placeholder {
-    color: #888888;
-    opacity: 1;
+    color: #cccccc !important;
+    opacity: 1 !important;
 }
 
 .form-control:-ms-input-placeholder {
-    color: #888888;
-    opacity: 1;
+    color: #cccccc !important;
+    opacity: 1 !important;
 }
 
 .form-control:-moz-placeholder {
-    color: #888888;
-    opacity: 1;
+    color: #cccccc !important;
+    opacity: 1 !important;
 }
 
 /* Buttons */
