@@ -227,6 +227,14 @@ Your project uses: Python (Flask), PostgreSQL, OAuth 2.0, Docker, Security-focus
   - Redis setup for caching/sessions
   - Monitoring and alerting setup
 
+- **DevOps Troubleshooter** → @devops-troubleshooter
+  - Production debugging and incident response
+  - Flask application error diagnosis
+  - Docker container troubleshooting
+  - Log analysis and root cause identification
+  - Configuration and dependency resolution
+  - Service health monitoring and recovery
+
 #### Quality Assurance
 - **Test Automation** → @test-automator
   - pytest test suite implementation
