@@ -48,8 +48,9 @@ cd /opt/cyberhunter-portal
 
 # Clone or update repository
 if [ -d ".git" ]; then
-    echo "📥 Stashing existing changes and pulling latest..."
+    echo "📥 Stashing existing changes, removing untracked files, and pulling latest..."
     git stash
+    git clean -fd
     git pull origin main
 else
     echo "📥 Cloning repository..."
