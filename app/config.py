@@ -29,6 +29,7 @@ class Config:
     SESSION_COOKIE_SECURE = True
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = 'Lax'
+    SESSION_REDIS_URL = os.environ.get('SESSION_REDIS_URL', 'redis://redis:6379/2')
     
     # Security
     WTF_CSRF_ENABLED = True
