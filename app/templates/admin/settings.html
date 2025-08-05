@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}System Settings - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">
+            <i class="fas fa-cogs"></i> System Settings
+        </h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <p class="lead">Configure system-wide settings for the CyberHunter Security Portal</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- OAuth Configuration -->
+        <div class="col-lg-6 col-md-12 mb-4">
+            <div class="card bg-dark border-success">
+                <div class="card-header bg-success text-dark">
+                    <h5 class="card-title mb-0">
+                        <i class="fab fa-microsoft"></i> <i class="fab fa-google"></i> OAuth Configuration
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Configure Microsoft and Google OAuth providers for corporate authentication.</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success"></i> Microsoft Azure AD integration</li>
+                        <li><i class="fas fa-check text-success"></i> Google Workspace integration</li>
+                        <li><i class="fas fa-check text-success"></i> Domain restrictions</li>
+                        <li><i class="fas fa-check text-success"></i> Secure token management</li>
+                    </ul>
+                    <a href="{{ url_for('admin.settings_oauth') }}" class="btn btn-success">
+                        <i class="fas fa-shield-alt"></i> Configure OAuth
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Email Configuration -->
+        <div class="col-lg-6 col-md-12 mb-4">
+            <div class="card bg-dark border-info">
+                <div class="card-header bg-info text-dark">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-envelope"></i> Email Configuration
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Configure SMTP and IMAP settings for email notifications and monitoring.</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-info"></i> SMTP server configuration</li>
+                        <li><i class="fas fa-check text-info"></i> IMAP monitoring setup</li>
+                        <li><i class="fas fa-check text-info"></i> Secure email delivery</li>
+                        <li><i class="fas fa-check text-info"></i> Custom sender settings</li>
+                    </ul>
+                    <a href="{{ url_for('admin.settings_email') }}" class="btn btn-info">
+                        <i class="fas fa-mail-bulk"></i> Configure Email
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Status -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card bg-dark border-warning">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-exclamation-triangle"></i> Important Security Notes
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning" role="alert">
+                        <h6><i class="fas fa-shield-alt"></i> Security Best Practices</h6>
+                        <ul class="mb-0">
+                            <li>All sensitive configuration data is encrypted at rest</li>
+                            <li>Changes to these settings are logged in the audit trail</li>
+                            <li>Test configurations in a development environment first</li>
+                            <li>Restart services may be required for some changes to take effect</li>
+                            <li>Keep OAuth client secrets and email passwords secure</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <div class="bg-success rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                        <i class="fas fa-database text-white"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="mb-0">Database</h6>
+                                    <small class="text-success">Connected</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <div class="bg-success rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                        <i class="fas fa-lock text-white"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="mb-0">Encryption</h6>
+                                    <small class="text-success">Active</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <div class="bg-info rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                        <i class="fas fa-user-shield text-white"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="mb-0">Admin Session</h6>
+                                    <small class="text-info">{{ current_user.username }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    box-shadow: 0 4px 8px rgba(0, 255, 136, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0, 255, 136, 0.2);
+    transform: translateY(-2px);
+}
+
+.card-header {
+    border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+.btn {
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.border-success {
+    border-color: #00ff88 !important;
+}
+
+.border-info {
+    border-color: #17a2b8 !important;
+}
+
+.border-warning {
+    border-color: #ffc107 !important;
+}
+</style>
+{% endblock %}

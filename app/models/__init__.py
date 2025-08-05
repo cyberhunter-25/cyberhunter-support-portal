@@ -7,6 +7,7 @@ from app.models.admin import AdminUser
 from app.models.ticket import Ticket, TicketMessage
 from app.models.attachment import Attachment
 from app.models.audit import AuditLog
+from app.models.settings import SystemSettings
 
 __all__ = [
     'Company',
@@ -17,5 +18,6 @@ __all__ = [
     'Ticket',
     'TicketMessage',
     'Attachment',
-    'AuditLog'
+    'AuditLog',
+    'SystemSettings'
 ]

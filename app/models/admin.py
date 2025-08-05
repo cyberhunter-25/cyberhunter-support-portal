@@ -78,24 +78,24 @@ class AdminUser(UserMixin, db.Model):
         self.failed_attempts += 1
         if self.failed_attempts >= lockout_attempts:
             self.locked_until = datetime.utcnow() + timedelta(seconds=lockout_duration)
-        db.session.commit()
+        db.session.add(self)
     
     def reset_failed_attempts(self):
         """Reset failed attempts on successful login"""
         self.failed_attempts = 0
         self.locked_until = None
-        db.session.commit()
+        db.session.add(self)
     
     def update_last_login(self):
         """Update last login timestamp"""
         self.last_login = datetime.utcnow()
-        db.session.commit()
+        db.session.add(self)
     
     def generate_reset_token(self):
         """Generate password reset token"""
         self.password_reset_token = secrets.token_urlsafe(32)
         self.token_expiry = datetime.utcnow() + timedelta(hours=1)
-        db.session.commit()
+        db.session.add(self)
         return self.password_reset_token
     
     def verify_reset_token(self, token):
@@ -110,7 +110,7 @@ class AdminUser(UserMixin, db.Model):
         """Clear password reset token after use"""
         self.password_reset_token = None
         self.token_expiry = None
-        db.session.commit()
+        db.session.add(self)
     
     def setup_mfa(self):
         """Setup MFA with new secret"""
@@ -137,14 +137,14 @@ class AdminUser(UserMixin, db.Model):
     def enable_mfa(self):
         """Enable MFA after successful verification"""
         self.mfa_enabled = True
-        db.session.commit()
+        db.session.add(self)
     
     def disable_mfa(self):
         """Disable MFA (admin only)"""
         self.mfa_enabled = False
         self.mfa_secret = None
         self.backup_codes = None
-        db.session.commit()
+        db.session.add(self)
     
     def generate_backup_codes(self, count=10):
         """Generate backup codes for MFA"""
@@ -155,7 +155,7 @@ class AdminUser(UserMixin, db.Model):
             codes.append(f"{code[:4]}-{code[4:]}")
             hashed_codes.append(generate_password_hash(code))
         self.backup_codes = hashed_codes
-        db.session.commit()
+        db.session.add(self)
         return codes  # Return unhashed codes to show user once
     
     def verify_backup_code(self, code):
@@ -168,7 +168,7 @@ class AdminUser(UserMixin, db.Model):
             if check_password_hash(hashed_code, code):
                 # Remove used code
                 self.backup_codes.pop(i)
-                db.session.commit()
+                db.session.add(self)
                 return True
         return False
     

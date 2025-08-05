@@ -100,8 +100,8 @@ def init_extensions(app):
         'CACHE_REDIS_URL': app.config.get('REDIS_URL', 'redis://localhost:6379/0')
     })
     
-    # Session - Configure Redis connection from REDIS_URL
-    redis_url = app.config.get('REDIS_URL', 'redis://localhost:6379/0')
+    # Session - Configure Redis connection from SESSION_REDIS_URL
+    redis_url = app.config.get('SESSION_REDIS_URL', 'redis://localhost:6379/2')
     # Parse the Redis URL to create a Redis instance
     if redis_url.startswith('redis://'):
         # Extract password if present

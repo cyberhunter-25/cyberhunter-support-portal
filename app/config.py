@@ -5,8 +5,9 @@ import os
 from datetime import timedelta
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+# Load environment variables from .env file if it exists
+# This will not override existing environment variables (like those set by Docker)
+load_dotenv(override=False)
 
 
 class Config:

@@ -1,0 +1,372 @@
+{% extends "base.html" %}
+
+{% block title %}Email Settings - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">
+            <i class="fas fa-envelope"></i> Email Configuration
+        </h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <a href="{{ url_for('admin.settings') }}" class="btn btn-outline-secondary me-2">
+                <i class="fas fa-arrow-left"></i> Back to Settings
+            </a>
+        </div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="row">
+        <div class="col-lg-8 col-md-10">
+            <form method="POST" class="card bg-dark border-info">
+                {{ form.hidden_tag() }}
+                <div class="card-header bg-info text-dark">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-mail-bulk"></i> Email Server Settings
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- SMTP Settings -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-paper-plane"></i> SMTP (Outbound Email)
+                            </h6>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.smtp_server.label(class="form-label") }}
+                            {{ form.smtp_server(class="form-control", placeholder="smtp.gmail.com") }}
+                            {% if form.smtp_server.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.smtp_server.errors %}<small>{{ error }}</small>{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.smtp_port.label(class="form-label") }}
+                            {{ form.smtp_port(class="form-control", placeholder="587") }}
+                            {% if form.smtp_port.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.smtp_port.errors %}<small>{{ error }}</small>{% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Common ports: 587 (TLS), 465 (SSL), 25 (unencrypted)</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.smtp_username.label(class="form-label") }}
+                            {{ form.smtp_username(class="form-control", placeholder="guardian@clirsec.com") }}
+                            {% if form.smtp_username.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.smtp_username.errors %}<small>{{ error }}</small>{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.smtp_password.label(class="form-label") }}
+                            {{ form.smtp_password(class="form-control", placeholder="Leave blank to keep current password") }}
+                            <div class="form-text">Leave blank to keep existing password</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check">
+                                {{ form.smtp_use_tls(class="form-check-input") }}
+                                {{ form.smtp_use_tls.label(class="form-check-label") }}
+                            </div>
+                            <div class="form-text">Enable TLS encryption for secure email delivery</div>
+                        </div>
+                    </div>
+
+                    <!-- Sender Settings -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6 class="text-success border-bottom pb-2">
+                                <i class="fas fa-user-tag"></i> Sender Information
+                            </h6>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.from_address.label(class="form-label") }}
+                            {{ form.from_address(class="form-control", placeholder="guardian@clirsec.com") }}
+                            {% if form.from_address.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.from_address.errors %}<small>{{ error }}</small>{% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Email address used as sender</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.from_name.label(class="form-label") }}
+                            {{ form.from_name(class="form-control", placeholder="CyberHunter Support") }}
+                            {% if form.from_name.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.from_name.errors %}<small>{{ error }}</small>{% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Display name for outgoing emails</div>
+                        </div>
+                    </div>
+
+                    <!-- IMAP Settings -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6 class="text-warning border-bottom pb-2">
+                                <i class="fas fa-download"></i> IMAP (Inbound Email Monitoring)
+                            </h6>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.imap_server.label(class="form-label") }}
+                            {{ form.imap_server(class="form-control", placeholder="imap.gmail.com") }}
+                            {% if form.imap_server.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.imap_server.errors %}<small>{{ error }}</small>{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.imap_port.label(class="form-label") }}
+                            {{ form.imap_port(class="form-control", placeholder="993") }}
+                            {% if form.imap_port.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.imap_port.errors %}<small>{{ error }}</small>{% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Common ports: 993 (SSL), 143 (STARTTLS)</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.imap_username.label(class="form-label") }}
+                            {{ form.imap_username(class="form-control", placeholder="guardian@clirsec.com") }}
+                            {% if form.imap_username.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.imap_username.errors %}<small>{{ error }}</small>{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.imap_password.label(class="form-label") }}
+                            {{ form.imap_password(class="form-control", placeholder="Leave blank to keep current password") }}
+                            <div class="form-text">Leave blank to keep existing password</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check">
+                                {{ form.imap_use_ssl(class="form-check-input") }}
+                                {{ form.imap_use_ssl.label(class="form-check-label") }}
+                            </div>
+                            <div class="form-text">Enable SSL encryption for secure email monitoring</div>
+                        </div>
+                    </div>
+
+                    <!-- Configuration Help -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="alert alert-info" role="alert">
+                                <h6><i class="fas fa-info-circle"></i> Gmail Configuration Help</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <strong>For Gmail/Google Workspace:</strong>
+                                        <ul class="mb-0">
+                                            <li>Enable 2-factor authentication</li>
+                                            <li>Generate app-specific password</li>
+                                            <li>Use app password instead of regular password</li>
+                                            <li>SMTP: smtp.gmail.com:587 (TLS)</li>
+                                            <li>IMAP: imap.gmail.com:993 (SSL)</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Security Notes:</strong>
+                                        <ul class="mb-0">
+                                            <li>Passwords are encrypted in database</li>
+                                            <li>Test connection after saving</li>
+                                            <li>Monitor email quota limits</li>
+                                            <li>Use dedicated service account</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-info btn-lg">
+                                <i class="fas fa-save"></i> Save Email Settings
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-lg ms-2" onclick="window.location.reload()">
+                                <i class="fas fa-undo"></i> Reset Form
+                            </button>
+                            <button type="button" class="btn btn-outline-warning btn-lg ms-2" onclick="testEmailConnection()">
+                                <i class="fas fa-paper-plane"></i> Test Connection
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Status & Help -->
+        <div class="col-lg-4 col-md-12">
+            <!-- Email Status -->
+            <div class="card bg-dark border-success">
+                <div class="card-header bg-success text-dark">
+                    <h6 class="card-title mb-0">
+                        <i class="fas fa-signal"></i> Email Status
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-circle text-success"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-2">
+                            <small>SMTP Configuration</small>
+                        </div>
+                        <span class="badge bg-success">OK</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-circle text-warning"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-2">
+                            <small>IMAP Monitoring</small>
+                        </div>
+                        <span class="badge bg-warning">Setup</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-circle text-info"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-2">
+                            <small>Email Queue</small>
+                        </div>
+                        <span class="badge bg-info">Active</span>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="text-center">
+                        <button class="btn btn-outline-success btn-sm" onclick="sendTestEmail()">
+                            <i class="fas fa-envelope"></i> Send Test Email
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Guidelines -->
+            <div class="card bg-dark border-danger mt-3">
+                <div class="card-header bg-danger text-white">
+                    <h6 class="card-title mb-0">
+                        <i class="fas fa-shield-alt"></i> Security Guidelines
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning" role="alert">
+                        <small>
+                            <strong>Email Security:</strong>
+                            <ul class="mb-0">
+                                <li>Use app passwords, not account passwords</li>
+                                <li>Enable 2FA on email accounts</li>
+                                <li>Regularly rotate credentials</li>
+                                <li>Monitor for suspicious activity</li>
+                                <li>Use dedicated service accounts</li>
+                            </ul>
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card bg-dark border-secondary mt-3">
+                <div class="card-header">
+                    <h6 class="card-title mb-0">
+                        <i class="fas fa-bolt"></i> Quick Actions
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <a href="https://myaccount.google.com/apppasswords" target="_blank" class="btn btn-outline-primary btn-sm d-block mb-2">
+                        <i class="fab fa-google"></i> Google App Passwords
+                    </a>
+                    <a href="https://support.microsoft.com/en-us/account-billing/using-app-passwords-with-apps-that-don-t-support-two-step-verification-5896ed9b-4263-e681-128a-a6f2979a7944" target="_blank" class="btn btn-outline-info btn-sm d-block mb-2">
+                        <i class="fab fa-microsoft"></i> Microsoft App Passwords
+                    </a>
+                    <a href="{{ url_for('admin.settings_oauth') }}" class="btn btn-outline-secondary btn-sm d-block">
+                        <i class="fas fa-shield-alt"></i> OAuth Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function testEmailConnection() {
+    // This would implement a test email connection feature
+    alert('Test connection feature would be implemented here');
+}
+
+function sendTestEmail() {
+    // This would send a test email
+    alert('Send test email feature would be implemented here');
+}
+</script>
+
+<style>
+.form-control {
+    background-color: #1a1a1a;
+    border-color: #444;
+    color: #fff;
+}
+
+.form-control:focus {
+    background-color: #1a1a1a;
+    border-color: #17a2b8;
+    color: #fff;
+    box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.25);
+}
+
+.form-check-input {
+    background-color: #1a1a1a;
+    border-color: #444;
+}
+
+.form-check-input:checked {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.form-text {
+    color: #aaa;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #444 !important;
+}
+
+.alert {
+    border: none;
+}
+
+.card {
+    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.1);
+}
+
+.btn {
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.text-danger {
+    color: #ff3333 !important;
+}
+</style>
+{% endblock %}

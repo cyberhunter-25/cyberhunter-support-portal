@@ -16,7 +16,7 @@ echo ""
 
 # Function to execute commands on server
 remote_exec() {
-    ssh $SERVER_USER@$SERVER_IP "$@"
+    ssh -i /Users/cdodunski/.ssh/claude_code_key $SERVER_USER@$SERVER_IP "$@"
 }
 
 # Step 1: Test connection
@@ -121,6 +121,6 @@ echo ""
 echo "🎉 Deployment script completed!"
 echo ""
 echo "📌 Quick commands:"
-echo "  View logs:    ssh $SERVER_USER@$SERVER_IP 'cd $APP_DIR && docker-compose logs -f'"
-echo "  Restart:      ssh $SERVER_USER@$SERVER_IP 'cd $APP_DIR && docker-compose restart'"
-echo "  Status:       ssh $SERVER_USER@$SERVER_IP 'cd $APP_DIR && docker-compose ps'"
+echo "  View logs:    ssh -i /Users/cdodunski/.ssh/claude_code_key $SERVER_USER@$SERVER_IP 'cd $APP_DIR && docker-compose logs -f'"
+echo "  Restart:      ssh -i /Users/cdodunski/.ssh/claude_code_key $SERVER_USER@$SERVER_IP 'cd $APP_DIR && docker-compose restart'"
+echo "  Status:       ssh -i /Users/cdodunski/.ssh/claude_code_key $SERVER_USER@$SERVER_IP 'cd $APP_DIR && docker-compose ps'"

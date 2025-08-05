@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - CyberHunter Security Portal</title>
+    <link rel="stylesheet" href="/static/css/cyber-theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+<link rel="stylesheet" href="/static/css/cyber-theme.css">
+<style>
+    .admin-login-container {
+        max-width: 400px;
+        margin: 100px auto;
+        padding: 30px;
+        background-color: #1a1a1a;
+        border: 2px solid #ff3333;
+        border-radius: 8px;
+        box-shadow: 0 0 30px rgba(255, 51, 51, 0.3);
+    }
+    
+    .admin-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .admin-title {
+        color: #ff3333;
+        font-size: 1.8em;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    
+    .admin-warning {
+        background-color: rgba(255, 51, 51, 0.1);
+        border: 1px solid #ff3333;
+        border-radius: 4px;
+        padding: 15px;
+        margin-bottom: 30px;
+        color: #ff3333;
+        text-align: center;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #ff3333;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.9em;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        background-color: #2a2a2a;
+        border: 1px solid #333;
+        color: #ffffff;
+        border-radius: 4px;
+        font-family: 'JetBrains Mono', monospace;
+    }
+    
+    .form-control:focus {
+        outline: none;
+        border-color: #ff3333;
+        box-shadow: 0 0 5px rgba(255, 51, 51, 0.3);
+    }
+    
+    .btn-admin-submit {
+        width: 100%;
+        padding: 12px;
+        background-color: #ff3333;
+        border: none;
+        color: #ffffff;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-admin-submit:hover {
+        background-color: #cc0000;
+        box-shadow: 0 0 20px rgba(255, 51, 51, 0.5);
+    }
+    
+    .back-link {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .back-link a {
+        color: #666;
+        text-decoration: none;
+    }
+    
+    .back-link a:hover {
+        color: #999;
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        
+            
+        
+        
+        
+<div class="admin-login-container">
+    <div class="admin-header">
+        <h1 class="admin-title">🛡️ Admin Access</h1>
+    </div>
+    
+    <div class="admin-warning">
+        <p>⚠️ AUTHORIZED PERSONNEL ONLY</p>
+        <p>All access attempts are logged and monitored</p>
+    </div>
+    
+    <form method="POST" action="">
+        <input id="csrf_token" name="csrf_token" type="hidden" value="ImViNDQyNDQwZGEzYmFjM2M3MjQwY2U2ZDkwN2YwNjI1MGUxODY2Njgi.aJF2tg.Nku0j3-5z_8zpOyFOl5Al7uZ4QQ">
+        
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input class="form-control" id="username" name="username" placeholder="Admin Username" required type="password" value="">
+            
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input class="form-control" id="password" name="password" placeholder="Password" required type="password" value="">
+            
+        </div>
+        
+        <input class="btn-admin-submit" id="submit" name="submit" type="submit" value="Sign In">
+    </form>
+    
+    <div class="back-link">
+        <a href="/auth/login">← Back to User Login</a>
+    </div>
+</div>
+
+    </div>
+    
+</body>
+</html>

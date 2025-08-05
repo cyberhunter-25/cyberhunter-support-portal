@@ -4,7 +4,7 @@ Authentication routes combining OAuth and local auth
 from flask import render_template, redirect, url_for, flash, request, session
 from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length
 
 from app.auth import auth_bp
@@ -17,7 +17,7 @@ from app.extensions import limiter, db
 
 class AdminLoginForm(FlaskForm):
     """Admin login form"""
-    username = PasswordField('Username', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Sign In')
 
@@ -80,8 +80,7 @@ def admin_login():
             flash('Account is locked due to too many failed attempts. Please try again later.', 'error')
             log_user_action(
                 action='admin_login_blocked',
-                admin=admin,
-                details={'reason': 'account_locked'},
+                details={'reason': 'account_locked', 'username': admin.username},
                 success=False
             )
             return redirect(url_for('auth.admin_login'))
@@ -89,11 +88,11 @@ def admin_login():
         # Verify password
         if not admin.check_password(password):
             admin.increment_failed_attempts()
+            db.session.commit()
             flash('Invalid username or password', 'error')
             log_user_action(
                 action='admin_login_failed',
-                admin=admin,
-                details={'reason': 'invalid_password'},
+                details={'reason': 'invalid_password', 'username': admin.username},
                 success=False
             )
             return redirect(url_for('auth.admin_login'))
@@ -103,14 +102,14 @@ def admin_login():
             flash('Your account has been deactivated.', 'error')
             log_user_action(
                 action='admin_login_blocked',
-                admin=admin,
-                details={'reason': 'account_deactivated'},
+                details={'reason': 'account_deactivated', 'username': admin.username},
                 success=False
             )
             return redirect(url_for('auth.admin_login'))
         
         # Reset failed attempts
         admin.reset_failed_attempts()
+        db.session.commit()
         
         # Store admin ID in session for MFA verification
         session['pending_admin_id'] = admin.id
@@ -149,10 +148,10 @@ def admin_verify_mfa():
             
             login_user(admin, remember=False)  # Never remember admin sessions
             admin.update_last_login()
+            db.session.commit()
             
             log_user_action(
-                action='admin_login_success',
-                admin=admin
+                action='admin_login_success'
             )
             
             flash(f'Welcome back, {admin.username}!', 'success')
@@ -165,11 +164,11 @@ def admin_verify_mfa():
                 
                 login_user(admin, remember=False)
                 admin.update_last_login()
+                db.session.commit()
                 
                 flash('Backup code used successfully. Please generate new backup codes.', 'warning')
                 log_user_action(
-                    action='admin_mfa_backup_code_used',
-                    admin=admin
+                    action='admin_mfa_backup_code_used'
                 )
                 
                 return redirect(url_for('admin.dashboard'))
@@ -177,7 +176,6 @@ def admin_verify_mfa():
                 flash('Invalid authentication code', 'error')
                 log_user_action(
                     action='admin_mfa_verification_failed',
-                    admin=admin,
                     success=False
                 )
     
@@ -221,10 +219,10 @@ def admin_setup_mfa():
             session['mfa_verified'] = True
             login_user(admin, remember=False)
             admin.update_last_login()
+            db.session.commit()
             
             log_user_action(
-                action='admin_mfa_enabled',
-                admin=admin
+                action='admin_mfa_enabled'
             )
             
             return render_template('auth/admin_mfa_backup_codes.html', backup_codes=backup_codes)
